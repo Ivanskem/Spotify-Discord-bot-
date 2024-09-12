@@ -3,6 +3,20 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
 
+try:
+    with open('settings.json', 'r', encoding='utf-8') as file:
+        settings = json.load(file)
+        spotify_id = settings["client_id"]
+        spotify_secret = settings["client_secret"]
+except FileNotFoundError:
+    new_json = {
+        "client_id": "client_id",
+        "client_secret": "client_secret",
+        "token": "token",
+        "redirect_url": "redirect_url"
+    }
+    with open("settings.json", 'w', encoding='utf-8') as file:
+        json.dump(new_json, file, indent=4)
 
 def get_current_track():
     spotify_request = spotipy.Spotify(auth_manager=spotipy.SpotifyOAuth(client_id=spotify_id,
